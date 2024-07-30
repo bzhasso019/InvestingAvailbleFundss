@@ -1,0 +1,132 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Профиль{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="elem col-11 mx-auto px-5 py-5">
+            <div class="h1 mb-4 font-weight-bold">Личный кабинет</div>
+            <form class="row" id="form_profileEdit">
+                <div class="col-12">
+                    <h3 id="error_message" class="error_message es_message"></h3>
+                    <h3 id="success_message" class="success_message es_message"></h3>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl email">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="email" name="email" value="{{data.email}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">Email</label>
+                        </div>
+                        <div class="error_podinp"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="inputs_bl name">
+                        <div class="inp_bl">
+                            <input type="text" class="auth_inp" id="name" name="name" value="{{data.name}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                            <span class="bord_inp"></span>
+                            <label class="place_podinp">ФИО</label>
+                        </div>
+                        <div class="error_podinp"></div>
+                    </div>
+                </div>
+
+                {% if userData.role == 'enterprise' or userData1.role == 'enterprise' %}
+                    <input type="hidden" id="client">
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl phone">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="phone" name="phone" value="{{data.phone}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Телефон</label>
+                            </div>
+                            <div class="error_podinp"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl address">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="address" name="address" value="{{data.address}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Адрес</label>
+                            </div>
+                            <div class="error_podinp"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl type_property">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="type_property" name="type_property" value="{{data.type_property}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Тип собственности</label>
+                            </div>
+                            <div class="error_podinp"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <div class="inputs_bl title">
+                            <div class="inp_bl">
+                                <input type="text" class="auth_inp" id="title" name="title" value="{{data.title}}" autocomplete="off" {% if not edit %}disabled{% endif %} required>
+                                <span class="bord_inp"></span>
+                                <label class="place_podinp">Наименование организации</label>
+                            </div>
+                            <div class="error_podinp"></div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if userData.role == 'Admin' %}
+                    {% if edit %}
+                        <div class="col-12 col-sm-6">
+                            <button type="submit" class="h3 py-3 mt-4 mt-sm-5" id="profileEditSave">Сохранить</button>
+                        </div>
+                    {% else %}
+                        <div class="col-12 col-sm-6">
+                            <button type="button" class="h3 py-3 mt-4 mt-sm-5"><a href="?edit=true">Редактировать профиль</a></button>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if userData.role == userData1.role and not edit %}
+                    <div class="col-12 {% if userData.role != 'Manager' %}col-sm-6{% endif %} d-flex align-items-end">
+                        <button type="button" class="h3 py-3 mt-5"><a href="/logout/">выход</a></button>
+                    </div>
+                {% endif %}
+
+                {% if userData.role == 'enterprise' or userData.role == 'Admin' %}
+                    {% if not edit %}
+                        {% if userData.role == 'Admin' %}
+                            {% if userData1.role == 'Admin' %}
+                                <div class="col-12">
+                            {% else %}
+                                <div class="col-6">
+                            {% endif %}
+                        {% else %}
+                            <div class="col-6">
+                        {% endif %}
+                            <button type="button" class="h3 py-3 mt-4 mt-sm-5 back_red" type="button" data-toggle="modal" data-target="#myModal">Удалить профиль</button>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade modal_deleteProfile" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content back_lvio p-5">
+                <div class="modal-body">
+                    <h3 id="error_message1" class="error_message es_message"></h3>
+                    <h3 id="success_message1" class="success_message es_message"></h3>
+                    <h1 class="text-center mb-4"><b>Уверены ли вы?</b></h1>
+                    <h2 class="text-center">На Вашем счету еще есть активы, если вы сейчас удалите аккаунт, вам вернутся средства на одну из привязанных карт, если ни одной карты не привязано деньги будут утеряны.</h2>
+                </div>
+                <div class="modal-footer mt-3">
+                    <button class="h4 py-3" id="deleteProfile">Да</button>
+                    <button class="h4 py-3 ml-3" data-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

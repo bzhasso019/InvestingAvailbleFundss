@@ -1,0 +1,76 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Торговля{% endblock %}
+{% block in_body %}
+
+<div class="row">
+    <div class="elem tabs col-11 mx-auto px-5 py-5" data-tabId="1" style="display: block;">
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <div>
+                <div class="prof_sec_1_2 pl-3 w-100">
+                    <div class="profile_sec_name h1 text-truncate">{{security.security_name}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="prof_sec_1">
+                    <div class="profile_securities_ta pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2 order-1">
+                        <div class="text-nowrap h1 mr-3">{{security.security_price}} ₽</div>
+                    </div>
+                    <div class="prof_sec_1_1 order-2">
+                        {% if security.security_img != None %}
+                            <img src="{% static 'logo_org/' %}{{security.security_img}}" class="w-100">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="lineChart" class="canvas_line"></canvas>
+        
+        <div class="row">
+            <div class="col-12">
+                <h3 id="error_message" class="error_message es_message"></h3>
+                <h3 id="success_message" class="success_message es_message"></h3>
+            </div>
+        </div>
+
+        <div class="sale_buy_but row mt-4 mt-xl-5">
+            <div class="col-6 mt-4">
+                <button class="h2 p-4" data-type="buy">Купить</button>
+            </div>
+            <div class="col-6 mt-4">
+                <button class="h2 p-4" data-type="sale">Продать</button>
+            </div>
+            <div class="inputs_bl inp_bl_o email col-12 mx-auto">
+                <label class="h2 mb-2 mt-4 d-flex justify-content-between">
+                    <span>В портфеле на данный момент <span id="total_quantity">{{security.total_quantity1}}</span> шт</span>
+                    <span class="pl-5 text-right"><span id="total_sum">{{security.total_sum}}</span> (<span class="col_lb" id="proc">{{security.proc}}%</span>)</span>
+                </label>
+                <div class="inp_bl mt-0">
+                    <input type="text" class="auth_inp auth_inp_o auth_inp_o_sum back_lvio inputSpaces h2 pl-3 pl-sm-5 py-4 mb-0" id="salse_sum" name="salse_sum" maxlength="16" autocomplete="off" required>
+                    <span class="bord_inp"></span>
+                    <div class="trade_sale_sum p-3">0 ₽</div>
+                </div>
+                <div class="error_podinp"></div>
+            </div>
+            <div class="col-12 mt-4 h1">Баланс: <span id="trade_balance">{{security.balance}}</span> ₽</div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-11 mx-auto p-0 mt-4">
+        <button class="h2"><a href="/trade/{{id}}/?type={{type.eng}}" class="p-4">Назад к списку {{type.rus}}</a></button>
+    </div>
+</div>
+{% endblock %}
+
+{% block in_script %}
+<script>
+    var is_line = {{security.graph_line.sum|safe}},
+        graph_line = JSON.parse('{{ security.graph_line|escapejs }}'.replace(/'/g, "\""));
+    $(document).ready(function() {
+        if(is_line != 0) generLine('lineChart', graph_line);
+    });
+</script>
+{% endblock %}

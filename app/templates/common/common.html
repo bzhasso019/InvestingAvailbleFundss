@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block in_title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% if in_slick %}
+            <link rel="stylesheet" type="text/css" href="{% static 'libs/slick/slick/slick.css' %}"/>
+            <link rel="stylesheet" type="text/css" href="{% static 'libs/slick/slick/slick-theme.css' %}"/>
+        {% endif %}
+        <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'style/all.css' %}">
+        <link rel="stylesheet" href="{% static 'style/style.css' %}">
+        <link rel="shortcut icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+        <script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
+        {% if in_slick %}
+            <script type="text/javascript" src="{% static 'libs/slick/slick/slick.min.js' %}" type="text/javascript"></script>
+        {% endif %}
+        {% block in_head %}{% endblock %}
+    </head>
+    <body class="bpreloader {% block in_body_class %}{% endblock %}">
+        <div id="preloader">
+            <div class="preloader_im">
+                <img src="{% static 'img/logo.svg' %}" alt="">
+            </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="row header">
+                <header class="elem col-11 my-5 mx-auto px-5 py-4">
+                    <h2 class="logo mb-0"><a href="/profile/"><a href="/"><img src="{% static 'img/logo.svg' %}" alt="Лого">Баблосс</a></h2>
+                    <div class="header_profile_aname pl-3">
+                        <div class="header_user_name mr-3 text-nowrap h3 mb-0"><a href="/profile/">{{userData.name}}</a></div>
+                        <div class="header_user_ava"><a href="/profile/"><img src="{% static 'img/avatar.svg' %}" alt=""></a></div>
+                    </div>
+                </header>
+            </div>
+
+            <div class="row">
+                <nav class="col_bvio col-11 mx-auto mb-3">{{nav|safe}}</nav>
+            </div>
+            {% block in_body %}{% endblock %}
+        </div>
+        
+        <!-- <div id="pop_chat" class="back_lb p-4">
+            <img src="{% static 'img/ico_chat.svg' %}" alt="">
+        </div> -->
+
+        
+        {% block in_script %}{% endblock %}
+        {% if in_scripts_graph %}
+            <script src="{% static 'libs/chart.min.js' %}" type="module" type="text/javascript"></script>
+            <script src="{% static 'dist/bundle.js' %}" type="text/javascript"></script>
+        {% endif %}
+        <script src="{% static 'js/all.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/core.js' %}" type="text/javascript"></script>
+
+        {% if userData.role == 'enterprise' %}
+            <script src="{% static 'js/core_enterprise_5x78w291.js' %}" type="text/javascript"></script>
+        {% endif %}
+        {% if userData.role == 'Manager' or userData.role == 'Admin'%}
+            <script src="{% static 'js/core_MA_vn37db38.js' %}" type="text/javascript"></script>
+        {% endif %}
+        {% if userData.role == 'Admin' %}
+            <script src="{% static 'js/core_Admin_322e32e23s.js' %}" type="text/javascript"></script>
+        {% endif %}
+
+    </body>
+</html>

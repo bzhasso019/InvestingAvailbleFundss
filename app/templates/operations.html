@@ -1,0 +1,49 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}История операций{% endblock %}
+{% block in_body_class %}{{bodyClass}}{% endblock %}
+{% block in_body %}
+    <div class="row nomh">
+        <div class="elem col-11 mx-auto p-5" id="mClientsList">
+            <div class="h1 mb-4 font-weight-bold">История операций</div>
+            {% if userData.role == 'enterprise' %}
+                {% for item in operations_data %}
+                    <div class="operation_el row mt-4">
+                        <div class="col-8">
+                            <div class="h3">{{item.type}}</div>
+                            <div class="col_bvio h4">{{item.date}}</div>
+                        </div>
+                        <div class="profile_securities_ta col-4">
+                            {% if item.type == 'Пополнение' %}
+                                <div class="col_lb text-nowrap h3">{{item.price}} ₽</div>
+                            {% else %}
+                                <div class="col_red text-nowrap h3">{{item.price}} ₽</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if userData.role == 'Manager' %}
+                {% for item in operations_data %}
+                    <div class="operation_el back_lbvoi el_hoverer row py-2" data-id="{{item.id}}">
+                        <div class="col-12 col-sm-5 mb-3 mb-sm-0">
+                            <div class="h3 d-inline-block d-sm-block">{{item.operation.type}}</div>
+                            <div class="col_bvio h4 ml-2 ml-sm-0 d-inline-block d-sm-block">{{item.operation.date}}</div>
+                        </div>
+                        <div class="col-6 col-sm-3">
+                            <div class="text-nowrap h3 text-start">{{item.name}}</div>
+                        </div>
+                        <div class="profile_securities_ta col-6 col-sm-4">
+                            {% if item.operation.type == 'Пополнение' %}
+                                <div class="col_lb text-nowrap h3">{{item.operation.price}} ₽</div>
+                            {% else %}
+                                <div class="col_red text-nowrap h3">{{item.operation.price}} ₽</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

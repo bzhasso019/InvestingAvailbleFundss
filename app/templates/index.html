@@ -1,0 +1,174 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Главная{% endblock %}
+{% block in_body %}
+    {% if userData.role == 'enterprise' %}
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Баланс</div>
+                <div class="h1 mt-4">{{balance}} ₽</div>
+                <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/payment" class="p-4">Пополнить</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/withdraw" class="p-4">Вывести</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/operations" class="p-4">Операции</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3"><a href="/analytic" class="p-4" {% if graph_pie|length == 0 %}onclick="return false"{% endif %}>Аналитика</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if userData.role == 'Manager' or userData.role == 'Admin' %}
+        <div class="row">
+            <div class="elem col-11 mx-auto px-5 pt-5 pb-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="h1 font-weight-bold">Баланс</div>
+                        <div class="h1 mt-4">{{balance}} ₽</div>
+                        <div class="col_lb h4">{{var_balance}} ₽ ({{var_balance_proc}}%)</div>
+                    </div>
+                    <div class="col d-grid align-items-start">
+                        <div class="h1 font-weight-bold text-right"><a href="/profile/{{id}}/">{{enterprise_name}}</a></div>
+                        <!-- <div class="h_home_but text-right">
+                            <button class="h3 p-4 mt-3">Отправить сообщение</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="home_buts col-11 mt-4 mx-auto pt-4 pb-3">
+                <div class="row justify-content-center">
+                    {% if userData.role != 'Admin' %}
+                        <div class="col-12 col-md-6 col-xl-3 mb-4">
+                            <button class="h3 h-100"><a href="/trade/{{id}}/" class="p-4">Торговля</a></button>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/analytic/{{id}}/" class="p-4" {% if graph_pie|length == 0 %}onclick="return false"{% endif %}>Аналитика</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/tradeHistory/{{id}}/" class="p-4">История торговли</a></button>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <button class="h3 h-100"><a href="/operations/{{id}}/" class="p-4">Операции</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Модальное окно -->
+        <div class="modal fade modal_deleteProfile" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content back_lvio p-5">
+                    <div class="modal-body">
+                        <h3 id="error_message" class="error_message es_message"></h3>
+                        <h3 id="success_message" class="success_message es_message"></h3>
+                        <h1 class="text-center mb-4"><b>Уверены ли вы?</b></h1>
+                        <h2 class="text-center">На Вашем счету еще есть активы, если вы сейчас удалите аккаунт, вам вернутся средства на одну из привязанных карт, если ни одной карты не привязано деньги будут утеряны.</h2>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <button class="h4 py-3" id="unlinkClient">Да</button>
+                        <button class="h4 py-3 ml-3" data-dismiss="modal">Нет</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if graph_bar.sum != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Стоимость портфеля</div>
+                <div class="h1 mt-4">{{var_balance_1}} ₽ (<span class="col_lb">{{var_balance_proc_1}}%</span>)</div>
+                <canvas id="webixChart" class="canvas_bar mt-5"></canvas>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if graph_pie|length != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                <div class="graph_pie row">
+                    <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                        <canvas id="pieChart" class="canvas_pie"></canvas>
+                    </div>
+                    <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                        <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                            {% for item in graph_pie %}
+                                <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if stocks_data|length != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Акции</div>
+                {% include "common/comSecurities.html" with sec_data=stocks_data %}
+            </div>
+        </div>
+    {% endif %}
+    {% if bonds_data|length != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Облигации</div>
+                {% include "common/comSecurities.html" with sec_data=bonds_data %}
+            </div>
+        </div>
+    {% endif %}
+    {% if funds_data|length != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Фонды</div>
+                {% include "common/comSecurities.html" with sec_data=funds_data %}
+            </div>
+        </div>
+    {% endif %}
+    {% if curr_metals_data|length != 0 %}
+        <div class="row">
+            <div class="elem col-11 my-3 mx-auto p-5">
+                <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
+                {% include "common/comSecurities.html" with sec_data=curr_metals_data %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block in_script %}
+<script>
+    var is_bar = {{graph_bar.sum|safe}},
+        is_pie = {{graph_pie|length}},
+        graph_bar = JSON.parse('{{ graph_bar|escapejs }}'.replace(/'/g, "\"")),
+        graph_pie = JSON.parse('{{ graph_pie|escapejs }}'.replace(/'/g, "\""));
+    $(document).ready(function() {
+        if(is_bar != 0) generBar('webixChart', graph_bar);
+        if(is_pie != 0) generPie('pieChart', graph_pie); 
+    });
+</script>
+{% endblock %}

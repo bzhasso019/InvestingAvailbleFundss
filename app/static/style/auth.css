@@ -1,0 +1,75 @@
+html{
+  font-size: 10px;
+}
+.container-fluid{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.form{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+form{
+  margin: auto;
+  display: inline-block;
+  overflow: hidden;
+  background: #19172E;
+  border-radius: 35px;
+  max-width: 600px !important;
+  width: 100%;
+  padding: 3rem !important;
+}
+button#reg{
+  padding: 0;
+}
+#reg a{
+  display: block;
+  padding: 1.5rem;
+}
+#auth{
+  margin-top: 3.5rem;
+}
+#error_message:not(:empty){
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.op0{
+  opacity: 0;
+  transition: 0.3s;
+}
+input:valid ~ .op0,
+input:focus ~ .op0{
+  opacity: 1;
+}
+
+
+@media all and (min-width: 400px){
+  html{
+    font-size: 11px;
+  }
+  form{
+    padding: 3rem 4rem !important;
+  }
+}
+
+@media all and (min-width: 720px){
+  form{
+    padding: 4rem 6rem !important;
+  }
+}
+
+@media all and (min-width: 960px){
+  form{
+    padding: 4rem 6rem !important;
+  }
+  html{
+    font-size: 13px;
+  }
+}
+
+@media all and (min-width: 1140px){
+  form{
+    padding: 4rem 6rem !important;
+  }
+}

@@ -1,0 +1,43 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}История торговли{% endblock %}
+{% block in_body %}
+    <div class="row nomh">
+        <div class="elem col-11 mx-auto px-5 py-5">
+            <div class="h1 mb-4 font-weight-bold">История торговли</div>
+
+            <div class="profile_securities_cont">
+                {% for item in sec_data %}
+                    <div class="row mb-3 mb-lg-5 mt-2 w-100 mx-0">
+                        <div class="prof_sec_1 col-9 col-md-5">
+                            <div class="prof_sec_1_1">
+                                {% if item.img != None %}
+                                    <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                                {% endif %}
+                            </div>
+                            <div class="prof_sec_1_2 pl-3 w-100">
+                                <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                                <div class="col_bvio h4">{{item.short_name}}</div>
+                            </div>
+                        </div>
+                        <div class="profile_securities_ta col-3 col-md-2 pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
+                            <div class="text-nowrap h3">{{item.type}}</div>
+                        </div>
+                        <div class="profile_securities_ta col-8 col-md-3 mt-3 mt-md-0 text-left h3 pl-lg-4 text-lg-right">
+                            <div class="{% if item.price < 0 %}col_red{% else %}col_lb{% endif %} text-nowrap h3">
+                                {{item.price}} ₽
+                            </div>
+                            <div class="col_bvio h4">{{item.count}} шт</div>
+                        </div>
+                        <div class="prof_sec_4 profile_securities_ta col-4 col-md-2 pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
+                            <div class="text-nowrap h3">
+                                {{item.date}}
+                            </div>
+                            <div class="col_bvio h4">{{item.time}}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

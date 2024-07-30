@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="profile_securities_cont">
+    {% for item in sec_data %}
+        <div class="el_hoverer row mb-4 mt-2 w-100 mx-0" data-id="{{item.short_name}}">
+            <div class="prof_sec_1 col-9 col-md-6">
+                <div class="prof_sec_1_1">
+                    {% if item.img != None %}
+                        <img src="{% static 'logo_org/' %}{{ item.img }}" class="w-100">
+                    {% endif %}
+                </div>
+                <div class="prof_sec_1_2 pl-3 w-100">
+                    <div class="profile_sec_name h3 text-truncate">{{item.name}}</div>
+                </div>
+            </div>
+            <div class="profile_securities_ta col-3 col-md-2 pl-3 pl-lg-4 text-right w-100 pr-4 pr-lg-2">
+                <div class="text-nowrap h3">{{item.short_name}}</div>
+            </div>
+            <div class="profile_securities_ta col-5 col-md-2 mt-3 mt-md-0 text-left h3 pl-lg-4 text-md-right">
+                <div class="text-nowrap h3">
+                    {{item.count}} шт
+                </div>
+            </div>
+            <div class="prof_sec_4 profile_securities_ta col-7 col-md-2 pl-3 pl-lg-4 w-100 pr-4 pr-lg-2">
+                <div class="text-nowrap h3">
+                    {{item.price}} ₽
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

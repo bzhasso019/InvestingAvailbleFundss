@@ -1,0 +1,48 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Торговля{% endblock %}
+{% block in_body %}
+<div class="row">
+    <div class="home_buts tradeSels col-11 mt-4 mx-auto pb-3">
+        <div class="row">
+            <div class="col-12 col-md-6 col-xl-3 mb-4">
+                <button class="h3 p-4 h-100 {% if type == 'stocks' or type == None %}back_lb{% endif %}" data-tab="1">Акции</button>
+            </div>
+            
+            <div class="col-12 col-md-6 col-xl-3 mb-4">
+                <button class="h3 p-4 h-100 {% if type == 'bonds' %}back_lb{% endif %}" data-tab="2">Облигации</button>
+            </div>
+            
+            <div class="col-12 col-md-6 col-xl-3 mb-4">
+                <button class="h3 p-4 h-100 {% if type == 'funds' %}back_lb{% endif %}" data-tab="3">Фонды</button>
+            </div>
+            
+            <div class="col-12 col-md-6 col-xl-3 mb-4">
+                <button class="h3 p-4 h-100 {% if type == 'curr_metals' %}back_lb{% endif %}" data-tab="4">Валюта и металлы</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row nomh">
+    <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="1" {% if type == 'stocks' or type == None %}style="display: block;"{% endif %}>
+        <div class="h1 mb-4 font-weight-bold">Список акций</div>
+        {% include "common/comSecuritiesTrade.html" with sec_data=stocks_data %}
+    </div>
+    
+    <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="2" {% if type == 'bonds' %}style="display: block;"{% endif %}>
+        <div class="h1 mb-4 font-weight-bold">Список Облигаций</div>
+        {% include "common/comSecuritiesTrade.html" with sec_data=bonds_data %}
+    </div>
+    
+    <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="3" {% if type == 'funds' %}style="display: block;"{% endif %}>
+        <div class="h1 mb-4 font-weight-bold">Список Фондов</div>
+        {% include "common/comSecuritiesTrade.html" with sec_data=funds_data %}
+    </div>
+    
+    <div class="elem tabs trade_tabs col-11 mx-auto px-5 py-5" data-tabId="4" {% if type == 'curr_metals' %}style="display: block;"{% endif %}>
+        <div class="h1 mb-4 font-weight-bold">Список Валют и металлов</div>
+        {% include "common/comSecuritiesTrade.html" with sec_data=curr_metals_data %}
+    </div>
+</div>
+{% endblock %}

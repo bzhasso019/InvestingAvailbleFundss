@@ -1,0 +1,86 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Главная{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="home_buts col-11 mx-auto pt-2">
+            <div class="row">
+                <div class="col-12 col-sm-6 mb-4 px-2 text-nowrap">
+                    <button class="h1"><a href="/operations/{{id}}" class="p-4">История операций</a></button>
+                </div>
+                <div class="col-12 col-sm-6 mb-4 px-2 text-nowrap">
+                    <button class="h1 p-4" id="hnewClient">Добавить клиента</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row newClientEmail">
+        <div class="elem col-11 mx-auto mt-3 mb-5 p-5">
+            <div class="h1 font-weight-bold m-0">Введите email нового клиента</div>
+            <form id="mAddEmail_form">
+                <div class="row align-items-end">
+                    <div class="col-12">
+                        <h3 id="error_message" class="error_message es_message"></h3>
+                        <h3 id="success_message" class="success_message es_message"></h3>
+                    </div>
+                    <div class="inputs_bl inp_bl_o email col-12 col-sm-8 mx-auto">
+                        <div class="inp_bl">
+                            <label class="place_imp_zag h4 mb-3">Email</label>
+                            <input type="text" class="auth_inp auth_inp_o auth_inp_o_sum back_lvio h2 px-3 px-sm-5 py-4" id="email" name="email" autocomplete="off" required>
+                            <span class="bord_inp"></span>
+                        </div>
+                        <div class="error_podinp"></div>
+                    </div>
+                    <div class="col-12 col-sm-4 mt-4 mt-sm-0">
+                        <button type="submit" class="h1 p-4">Добавить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if userData.role == 'Admin' %}
+        <div class="row mb-2">
+            <div class="elem col-11 mx-auto px-5 py-3 h1 text-center font-weight-bold">Сотрудник <a href="/profile/{{userData1.id}}/">{{userData1.name}}</a></div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="elem col-11 mx-auto px-5 py-3 h1 text-center font-weight-bold">Клиенты</div>
+    </div>
+
+    <div id="mClientsList">
+        {% for item in users %}
+            <div class="row">
+                <div class="elem el_hoverer col-11 mx-auto my-2 px-5 py-4" data-id="{{item.id}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-sm-6">
+                            <div class="h1">{{item.name}}</div>
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0 p-sm-0 pr-sm-2 text-sm-right">
+                                <div class="h1">{{item.balance}} ₽ 
+                                (<span class="{% if '-' in item.balance_proc %}col_red{% else %}col_lb{% endif %}">{{item.balance_proc}}%</span>)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="cloneBl cloneClientBlock">
+            <div class="row cloneb">
+                <div class="elem el_hoverer col-11 mx-auto my-2 px-5 py-4" data-id="$id">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-sm-6">
+                            <div class="h1">$name</div>
+                        </div>
+                        <div class="col-12 col-sm-6 mt-3 mt-sm-0 p-sm-0 pr-sm-2 text-sm-right">
+                            <div class="h1">$balance ₽ (<span class="$color">$balance_proc</span>)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

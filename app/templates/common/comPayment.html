@@ -1,0 +1,65 @@
+{% extends './common.html' %}
+{% load static %}
+{% block in_title %}{{in_pay_title}}{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="elem col-11 col-sm-10 col-lg-8 mx-auto px-5 py-5">
+            <div class="h1 font-weight-bold">{{in_pay_title}}</div>
+            <form class="payment row" id="{{id_form}}">
+                <div class="col-12">
+                    <h3 id="error_message" class="error_message es_message"></h3>
+                    <h3 id="success_message" class="success_message es_message"></h3>
+                </div>
+                <div class="payment1 col-12 col-sm-11 mx-auto px-0">
+                    <div class="inputs_bl inp_bl_o amount">
+                        <div class="inp_bl">
+                            <label class="place_imp_zag h4 mb-3">{{in_pay_zag1}}</label>
+                            <input type="text" class="auth_inp auth_inp_o auth_inp_o_sum back_lvio inputSpaces inputRub h2 px-3 px-sm-5 py-4" id="amount" name="amount" 
+                            placeholder="{% if in_pay_title == 'Вывод' %}{{userData.balance}} ₽{% endif %}" data-count="{% if in_pay_title == 'Вывод' %}{{userData.balance}}{% endif %}" autocomplete="off" required>
+                            <span class="bord_inp"></span>
+                        </div>
+                        <div class="error_podinp"></div>
+                    </div>
+                </div>
+                <div class="payment2 col-12 col-sm-11 mx-auto px-0 d-flex justify-content-between">
+                    <div class="">
+                        <div class="inputs_bl inp_bl_o card_number">
+                            <div class="inp_bl">
+                                <label class="place_imp_zag h4 mb-3">Номер карты</label>
+                                <input type="text" class="auth_inp auth_inp_o auth_inp_o_num back_lvio h2 px-3 px-sm-5 py-4" id="card_number" name="card_number" maxlength="19" autocomplete="off" required>
+                                <span class="bord_inp"></span>
+                            </div>
+                            <div class="error_podinp"></div>
+                        </div>
+                    </div>
+                    {% if in_pay_title == 'Пополнение' %}
+                        <div class="ml-2">
+                            <div class="inputs_bl inp_bl_o card_date">
+                                <div class="inp_bl">
+                                    <label class="place_imp_zag h4 mb-3">Срок карты</label>
+                                    <input type="text" class="auth_inp auth_inp_o auth_inp_o_date back_lvio h2 px-3 px-sm-5 py-4 text-center" id="card_date" name="card_date" maxlength="5" autocomplete="off" required>
+                                    <span class="bord_inp"></span>
+                                </div>
+                                <div class="error_podinp"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="payment3 col-12 col-sm-11 mx-auto px-0">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 order-sm-2 mb-4 mb-sm-0 text-sm-right">
+                            <label class="ccheckbox h4 mb-0 h-100 justify-content-sm-end"> 
+                                <input type="checkbox" id="card_save" name="card_save">
+                                <div class="checkbox mr-3"></div>
+                                Запомнить эту карту
+                            </label>
+                        </div>
+                        <div class="col-12 col-sm-6 order-sm-1">
+                            {{in_pay_but|safe}}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

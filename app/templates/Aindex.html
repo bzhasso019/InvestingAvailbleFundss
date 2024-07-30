@@ -1,0 +1,28 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Главная{% endblock %}
+{% block in_body %}
+    <div class="row">
+        <div class="col-11 mx-auto">
+            <button class="h3 mb-5 mt-2"><a href="/registration/" class="p-4">Зарегистрировать сотрудника или администратора</a></button>
+            <div class="row" id="aUserList">
+                <div class="col-6 h1">
+                    <div class="elem p-5" data-type="enterprise">
+                        <div class="h1 font-weight-bold mb-5">Клиенты</div>
+                            {% for item in users.clients %}
+                                <div class="el_hoverer h1 py-3" data-id="{{item.id}}">{{item.fio}}</div>
+                            {% endfor %}
+                    </div>
+                </div>
+                <div class="col-6 h1">
+                    <div class="elem p-5" data-type="employee">
+                        <div class="h1 font-weight-bold mb-5">Сотрудники</div>
+                        {% for item in users.employees %}
+                            <div class="el_hoverer h1 py-3" data-id="{{item.id}}">{{item.fio}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

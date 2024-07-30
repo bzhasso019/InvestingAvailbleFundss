@@ -1,0 +1,140 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}Аналитика{% endblock %}
+{% block in_body_class %}banalytic{% endblock %}
+{% block in_body %}
+    <div class="analytic_slick">
+        {% if pie.stocks_data|length != 0 %}
+            <div>
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                        <div class="h1 mb-4 font-weight-bold">Акции</div>
+                        {% include "common/comSecurities.html" with sec_data=securities.stocks_data %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">                    
+                        <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                        <div class="graph_pie row">
+                            <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                                <canvas id="stocsPie" class="canvas_pie"></canvas>
+                            </div>
+                            <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                                <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                                    {% for item in pie.stocks_data %}
+                                        <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if pie.bonds_data|length != 0 %}
+            <div>
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                        <div class="h1 mb-4 font-weight-bold">Облигации</div>
+                        {% include "common/comSecurities.html" with sec_data=securities.bonds_data %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">                    
+                        <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                        <div class="graph_pie row">
+                            <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                                <canvas id="bondsPie" class="canvas_pie"></canvas>
+                            </div>
+                            <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                                <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                                    {% for item in pie.bonds_data %}
+                                        <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+            
+
+        {% if pie.funds_data|length != 0 %}
+            <div>
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                        <div class="h1 mb-4 font-weight-bold">Фонды</div>
+                        {% include "common/comSecurities.html" with sec_data=securities.funds_data %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">                    
+                        <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                        <div class="graph_pie row">
+                            <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                                <canvas id="fundsPie" class="canvas_pie"></canvas>
+                            </div>
+                            <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                                <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                                    {% for item in pie.funds_data %}
+                                        <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+            
+            
+        {% if pie.curr_metals_data|length != 0 %}
+            <div>
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">
+                        <div class="h1 mb-4 font-weight-bold">Валюта и металлы</div>
+                        {% include "common/comSecurities.html" with sec_data=securities.curr_metals_data %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="elem col-11 my-3 mx-auto px-5 py-5">                    
+                        <div class="h1 font-weight-bold">Процентное соотношение портфеля</div>
+                        <div class="graph_pie row">
+                            <div class="portfolio_pit_bl col-10 mx-auto col-sm-5 offset-sm-1 my-4 mt-md-5">
+                                <canvas id="curr_metalsPie" class="canvas_pie"></canvas>
+                            </div>
+                            <div class="col-12 col-sm-6 d-flex flex-wrap align-items-center">
+                                <div class="hportfolio_proc_names mt-5 mt-sm-0">
+                                    {% for item in pie.curr_metals_data %}
+                                        <div class="h3 w-100 pie_item_chart pie_item-{{ forloop.counter0 }}"><div class="pie_ico_col" style="background: {{item.color}}"></div>{{item.name}} ({{item.proc}}%)</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+  
+    <script>
+        var pie_data = JSON.parse('{{ pie|escapejs }}'.replace(/'/g, "\"")),
+            pie_stocks = pie_data.stocks_data,
+            pie_bonds = pie_data.bonds_data,
+            pie_funds = pie_data.funds_data,
+            pie_curr_metals = pie_data.curr_metals_data;
+        $(document).ready(function() {
+            if(pie_stocks.length != 0) generPie('stocsPie', pie_stocks);
+            if(pie_bonds.length != 0) generPie('bondsPie', pie_bonds);
+            if(pie_funds.length != 0) generPie('fundsPie', pie_funds);
+            if(pie_curr_metals.length != 0) generPie('curr_metalsPie', pie_curr_metals);
+        });
+    </script>
+{% endblock %}

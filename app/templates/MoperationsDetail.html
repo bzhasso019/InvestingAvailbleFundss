@@ -1,0 +1,27 @@
+{% extends './common/common.html' %}
+{% load static %}
+{% block in_title %}История операций{% endblock %}
+{% block in_body %}
+    <div class="row nomh">
+        <div class="elem col-11 mx-auto p-5">
+            <div class="h1 mb-4 font-weight-bold">История операций {{name}}</div>
+            <div class="list_data">
+                {% for item in operations_data %}
+                    <div class="operation_el row mt-4">
+                        <div class="col-8">
+                            <div class="h3">{{item.type}}</div>
+                            <div class="col_bvio h4">{{item.date}}</div>
+                        </div>
+                        <div class="profile_securities_ta col-4">
+                            {% if item.type == 'Пополнение' %}
+                                <div class="col_lb text-nowrap h3">{{item.price}} ₽</div>
+                            {% else %}
+                                <div class="col_red text-nowrap h3">{{item.price}} ₽</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
